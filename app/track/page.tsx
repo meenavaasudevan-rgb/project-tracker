@@ -26,7 +26,7 @@ export default function TrackPage() {
       const token = localStorage.getItem("token");
 
       const response = await axios.get(
-        "http://localhost:5000/projects",
+        `${process.env.NEXT_PUBLIC_API_URL}/projects`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -55,7 +55,7 @@ export default function TrackPage() {
       const token = localStorage.getItem("token");
 
       const response = await axios.put(
-        `http://localhost:5000/projects/${id}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/projects/${id}`,
         {
           status: newStatus,
         },
@@ -93,7 +93,7 @@ export default function TrackPage() {
       const token = localStorage.getItem("token");
 
       const response = await axios.put(
-        `http://localhost:5000/projects/${id}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/projects/${id}`,
         {
           name: editName,
           description: editDescription,
@@ -140,7 +140,7 @@ export default function TrackPage() {
       const token = localStorage.getItem("token");
 
       await axios.delete(
-        `http://localhost:5000/projects/${id}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/projects/${id}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,

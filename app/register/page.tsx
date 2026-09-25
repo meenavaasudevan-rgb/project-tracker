@@ -21,7 +21,7 @@ export default function RegisterPage() {
 
     try {
       const response = await axios.post(
-        "http://localhost:5000/register",
+       `${process.env.NEXT_PUBLIC_API_URL}/register`,
         {
           name,
           email,

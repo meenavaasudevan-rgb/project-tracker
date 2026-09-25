@@ -20,7 +20,7 @@ export default function ProjectsPage() {
         const token = localStorage.getItem("token");
 
         const response = await axios.get(
-          "http://localhost:5000/projects",
+         `${process.env.NEXT_PUBLIC_API_URL}/projects`,
           {
             headers: {
               Authorization: `Bearer ${token}`,

@@ -24,21 +24,22 @@ export default function ProjectAssistant() {
 
     try {
       const token = localStorage.getItem("token");
+const response = await fetch(
+  `${process.env.NEXT_PUBLIC_API_URL}/projects`,
+  {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  }
+);
 
-      const response = await axios.get(
-        "http://localhost:5000/projects",
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+const data = await response.json();
 
-      const projects: Project[] = response.data.projects || response.data;
+const projects: Project[] = data.projects || data;
 
-      const question = search.toLowerCase();
+const question = search.toLowerCase();
 
-      let filteredProjects = projects;
+let filteredProjects = projects;
 
       // Search by status
       if (question.includes("pending")) {
