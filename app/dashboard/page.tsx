@@ -22,7 +22,7 @@ type Task = {
   dueDate: string;
 };
 
-const API_URL  = process.env.NEXT_PUBLIC_API_URL;;
+const API_URL  = process.env.NEXT_PUBLIC_API_URL;
 
 export default function DashboardPage() {
   const router = useRouter();
@@ -126,6 +126,17 @@ export default function DashboardPage() {
       </div>
     );
   }
+const completedProjects = projects.filter(
+  (project) => project.status === "Completed"
+).length;
+
+const inProgressProjects = projects.filter(
+  (project) => project.status === "In Progress"
+).length;
+
+const pendingProjects = projects.filter(
+  (project) => project.status === "Not Started"
+).length;
 
   const totalTasks = tasks.length;
 
@@ -268,7 +279,7 @@ export default function DashboardPage() {
               </p>
 
               <h2 className="mt-1 text-4xl font-extrabold text-blue-600">
-                {inProgressTasks}
+                {inProgressProjects}
               </h2>
             </div>
 
@@ -283,7 +294,7 @@ export default function DashboardPage() {
               </p>
 
               <h2 className="mt-1 text-4xl font-extrabold text-green-600">
-                {completedTasks}
+                {completedProjects}
               </h2>
             </div>
 
@@ -298,7 +309,7 @@ export default function DashboardPage() {
               </p>
 
               <h2 className="mt-1 text-4xl font-extrabold text-orange-500">
-                {pendingTasks}
+                {pendingProjects}
               </h2>
             </div>
 
