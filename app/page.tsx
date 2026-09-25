@@ -1,28 +1,48 @@
 "use client";
 
 import DashboardCard from "./components/DashboardCard";
-import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
+
+const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 export default function HomePage() {
   const [userName, setUserName] = useState("");
+  const [projects, setProjects] = useState<any[]>([]);
 
-  const projects = useSelector(
-    (state: any) => state.projects.items
-  );
-
-  // Get logged-in user's name from JWT token
+  // Get logged-in user's name and projects
   useEffect(() => {
     const token = localStorage.getItem("token");
 
-    if (token) {
-      try {
-        const payload = JSON.parse(atob(token.split(".")[1]));
-        setUserName(payload.name);
-      } catch (error) {
-        console.error("Invalid token", error);
-      }
+    if (!token) {
+      return;
     }
+
+    try {
+      const payload = JSON.parse(atob(token.split(".")[1]));
+      setUserName(payload.name || "User");
+    } catch (error) {
+      console.error("Invalid token", error);
+    }
+
+    // Fetch projects from backend
+    fetch(`${API_URL}/projects`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (Array.isArray(data)) {
+          setProjects(data);
+        } else if (Array.isArray(data.projects)) {
+          setProjects(data.projects);
+        } else {
+          setProjects([]);
+        }
+      })
+      .catch((error) => {
+        console.error("Failed to fetch projects", error);
+      });
   }, []);
 
   console.log("Projects:", projects);
@@ -34,7 +54,9 @@ export default function HomePage() {
   ).length;
 
   const pendingProjects = projects.filter(
-    (project: any) => project.status === "Pending"
+    (project: any) =>
+      project.status === "Pending" ||
+      project.status === "Not Started"
   ).length;
 
   const inProgressProjects = projects.filter(
