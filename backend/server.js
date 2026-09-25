@@ -14,8 +14,10 @@ app.use(cors());
 app.use(express.json());
 
 // MongoDB Connection
+// MongoDB Connection
+
 mongoose
-  .connect("mongodb://127.0.0.1:27017/projectTrackerDB")
+  .connect(process.env.MONGO_URI)
   .then(() => {
     console.log("✅ MongoDB Connected");
   })
@@ -24,11 +26,16 @@ mongoose
   });
 
 // Routes
+
 app.use("/", loginRoutes);
-app.use("/",registerRoutes);
+app.use("/", registerRoutes);
 app.use("/projects", projectRoutes);
 app.use("/tasks", taskRoutes);
+
 // Server
-app.listen(5000, () => {
-  console.log("Server is running on port 5000");
+
+const PORT = process.env.PORT || 5000;
+
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
 });
